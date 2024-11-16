@@ -18,6 +18,7 @@ BuildRequires:  pkgconfig(libdrm)
 BuildRequires:  pkgconfig(blueprint-compiler)
 BuildRequires:  pkgconfig(libadwaita-1)
 BuildRequires:  pkgconfig(systemd)
+BuildRequires:  pkgconfig(pygobject-3.0)
 Requires:       %{name}-daemon = %{version}-%{release}
 %description
 This application allows you to control your AMD GPU on a Linux system.
