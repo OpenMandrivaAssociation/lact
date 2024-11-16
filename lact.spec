@@ -48,9 +48,9 @@ directory = "vendor"
 EOF
 
 %build
-cargo_build -p lact --no-default-features --features=adw
+cargo build -p lact --no-default-features --features=adw
 mv target/release/lact{,-headless}
-cargo_build -p lact --features=adw
+cargo build -p lact --features=adw
 
 %install
 %make_install PREFIX="%{_prefix}"
