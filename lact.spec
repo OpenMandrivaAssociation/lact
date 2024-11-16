@@ -15,7 +15,7 @@ BuildRequires:  cargo
 BuildRequires:  rust-packaging
 BuildRequires:  pkgconfig(gtk4)
 BuildRequires:  pkgconfig(libdrm)
-BuildRequires:  blueprint-compiler
+BuildRequires:  pkgconfig(blueprint-compiler)
 BuildRequires:  pkgconfig(libadwaita-1)
 BuildRequires:  pkgconfig(systemd)
 Requires:       %{name}-daemon = %{version}-%{release}
