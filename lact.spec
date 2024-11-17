@@ -10,6 +10,8 @@ License:        MIT
 URL:            https://github.com/ilya-zlobintsev/LACT
 Source:         https://github.com/ilya-zlobintsev/LACT/archive/v%{version}/%{oname}-%{version}.tar.gz
 Source1:        vendor.tar.xz
+Patch0:         install-headless.patch
+Patch1:         service-use-headless.patch
 
 BuildRequires:  cargo
 BuildRequires:  rust-packaging
