@@ -10,8 +10,6 @@ License:        MIT
 URL:            https://github.com/ilya-zlobintsev/LACT
 Source:         https://github.com/ilya-zlobintsev/LACT/archive/v%{version}/%{oname}-%{version}.tar.gz
 Source1:        vendor.tar.xz
-Patch0:         install-headless.patch
-Patch1:         service-use-headless.patch
 
 BuildRequires:  cargo
 BuildRequires:  rust-packaging
@@ -24,15 +22,10 @@ BuildRequires:  pkgconfig(pango)
 BuildRequires:  pkgconfig(pygobject-3.0)
 BuildRequires:  python-gi
 Requires:       %{name}-daemon = %{version}-%{release}
+
 %description
 This application allows you to control your AMD GPU on a Linux system.
 
-%package daemon
-Summary:        Linux AMDGPU Controller - headless binary
-%description daemon
-This application allows you to control your AMD GPU on a Linux system.
-
-This package holds a headless binary without all the GUI dependencies.
 
 %prep
 # Vendored sources
@@ -53,9 +46,7 @@ directory = "vendor"
 EOF
 
 %build
-cargo build -p lact --no-default-features --features=adw
-mv target/release/lact{,-headless}
-cargo build -p lact --features=adw
+cargo build -p lact --release --features=adw
 
 %install
 %make_install PREFIX="%{_prefix}"
@@ -79,9 +70,5 @@ cargo build -p lact --features=adw
 %{_datadir}/applications/io.github.lact-linux.desktop
 %{_datadir}/pixmaps/io.github.lact-linux.png
 %{_datadir}/icons/hicolor/scalable/apps/io.github.lact-linux.svg
-
-%files daemon
-%{_bindir}/lact-headless
 %{_unitdir}/lactd.service
-%license LICENSE
-%doc *.md
+
