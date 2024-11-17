@@ -1,0 +1,13 @@
+Index: LACT-0.5.6/res/lactd.service
+===================================================================
+--- LACT-0.5.6.orig/res/lactd.service
++++ LACT-0.5.6/res/lactd.service
+@@ -3,7 +3,7 @@ Description=AMDGPU Control Daemon
+ After=multi-user.target
+ 
+ [Service]
+-ExecStart=lact daemon
++ExecStart=/usr/bin/lact-headless daemon
+ Nice=-10
+ Restart=on-failure
+ 
