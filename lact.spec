@@ -1,3 +1,4 @@
+%undefine _debugsource_packages
 %global services lactd.service
 %define oname LACT
 
