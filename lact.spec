@@ -50,12 +50,6 @@ cargo build -p lact --release --features=adw
 %install
 %make_install PREFIX="%{_prefix}"
 
-%pre
-%service_add_pre %{services}
-
-%preun
-%service_del_preun %{services}
-
 %post
 %service_add_post %{services}
 
