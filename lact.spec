@@ -22,11 +22,9 @@ BuildRequires:  pkgconfig(systemd)
 BuildRequires:  pkgconfig(pango)
 BuildRequires:  pkgconfig(pygobject-3.0)
 BuildRequires:  python-gi
-Requires:       %{name}-daemon = %{version}-%{release}
 
 %description
 This application allows you to control your AMD GPU on a Linux system.
-
 
 %prep
 # Vendored sources
