@@ -1,0 +1,12 @@
+ 	Index: LACT-0.5.6/Makefile
+===================================================================
+--- LACT-0.5.6.orig/Makefile
++++ LACT-0.5.6/Makefile
+@@ -12,6 +12,7 @@ build-release-headless:
+ 	cargo build -p lact --release --no-default-features
+ 
+ install:
++	install -Dm755 target/release/lact-headless $(DESTDIR)$(PREFIX)/bin/lact-headless
+ 	install -Dm755 target/release/lact $(DESTDIR)$(PREFIX)/bin/lact
+ 	install -Dm644 res/lactd.service $(DESTDIR)$(PREFIX)/lib/systemd/system/lactd.service
+ 	install -Dm644 res/io.github.lact-linux.desktop $(DESTDIR)$(PREFIX)/share/applications/io.github.lact-linux.desktop
