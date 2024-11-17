@@ -18,6 +18,7 @@ BuildRequires:  pkgconfig(libdrm)
 BuildRequires:  pkgconfig(blueprint-compiler)
 BuildRequires:  pkgconfig(libadwaita-1)
 BuildRequires:  pkgconfig(systemd)
+BuildRequires:  pkgconfig(pango)
 BuildRequires:  pkgconfig(pygobject-3.0)
 BuildRequires:  python-gi
 Requires:       %{name}-daemon = %{version}-%{release}
@@ -50,8 +51,8 @@ directory = "vendor"
 EOF
 
 %build
-cargo build -p lact --no-default-features --features=adw
-mv target/release/lact{,-headless}
+#cargo build -p lact --no-default-features --features=adw
+#mv target/release/lact{,-headless}
 cargo build -p lact --features=adw
 
 %install
