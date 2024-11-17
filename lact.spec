@@ -51,8 +51,8 @@ directory = "vendor"
 EOF
 
 %build
-#cargo build -p lact --no-default-features --features=adw
-#mv target/release/lact{,-headless}
+cargo build -p lact --no-default-features --features=adw
+mv target/release/lact{,-headless}
 cargo build -p lact --features=adw
 
 %install
