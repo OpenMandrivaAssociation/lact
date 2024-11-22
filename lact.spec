@@ -50,11 +50,15 @@ cargo build -p lact --release --features=adw
 %install
 %make_install PREFIX="%{_prefix}"
 
+
 %post
-%service_add_post %{services}
+%systemd_post lactd.service
+
+%preun
+%systemd_preun lactd.service
 
 %postun
-%service_del_postun %{services}
+%systemd_postun_with_restart lactd.service
 
 %files
 %license LICENSE
