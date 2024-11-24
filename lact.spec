@@ -22,6 +22,12 @@ BuildRequires:  pkgconfig(systemd)
 BuildRequires:  pkgconfig(pango)
 BuildRequires:  pkgconfig(pygobject-3.0)
 BuildRequires:  python-gi
+BuildRequires:  systemd-rpm-macros
+
+Requires: libadwaita-common
+Requires: gtk4
+Requires: python-gi
+Requires: python-gobject3
 
 %description
 This application allows you to control your AMD GPU on a Linux system.
@@ -50,9 +56,9 @@ cargo build -p lact --release --features=adw
 %install
 %make_install PREFIX="%{_prefix}"
 
-
 %post
 %systemd_post lactd.service
+systemctl enable --now lactd.service || true
 
 %preun
 %systemd_preun lactd.service
