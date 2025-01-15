@@ -3,7 +3,7 @@
 %define oname LACT
 
 Name:           lact
-Version:        0.6.0
+Version:        0.7.0
 Release:        1
 Summary:        Linux AMDGPU Controller
 Group:          Utility
@@ -46,8 +46,13 @@ git = "https://github.com/ilya-zlobintsev/nvml-wrapper"
 branch = "lact"
 replace-with = "vendored-sources"
 
+[source."git+https://gitlab.com/corectrl/copes"]
+git = "https://gitlab.com/corectrl/copes"
+replace-with = "vendored-sources"
+
 [source.vendored-sources]
 directory = "vendor"
+
 EOF
 
 %build
