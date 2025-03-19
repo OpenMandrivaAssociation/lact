@@ -3,7 +3,7 @@
 %define oname LACT
 
 Name:           lact
-Version:        0.7.1
+Version:        0.7.2
 Release:        1
 Summary:        Linux AMDGPU Controller
 Group:          Utility
@@ -11,6 +11,8 @@ License:        MIT
 URL:            https://github.com/ilya-zlobintsev/LACT
 Source:         https://github.com/ilya-zlobintsev/LACT/archive/v%{version}/%{oname}-%{version}.tar.gz
 Source1:        vendor.tar.xz
+# vendor.tar.xz is generated using
+# tar -xvf LACT-0.7.2.tar.gz && cargo vendor LACT-0.7.2/vendor && tar -cJf vendor.tar.xz LACT-0.7.2/vendor
 
 BuildRequires:  cargo
 BuildRequires:  rust-packaging
