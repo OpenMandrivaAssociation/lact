@@ -78,7 +78,7 @@ systemctl enable --now lactd.service || true
 %doc *.md
 %{_bindir}/lact
 %{_datadir}/applications/io.github.ilya_zlobintsev.LACT.desktop
-%{_datadir}/pixmaps/io.github.ilya_zlobintsev.lact-linux.png
-%{_datadir}/icons/hicolor/scalable/apps/io.github.ilya_zlobintsev.lact-linux.svg
+#{_datadir}/pixmaps/io.github.ilya_zlobintsev.lact-linux.png
+#{_datadir}/icons/hicolor/scalable/apps/io.github.ilya_zlobintsev.lact-linux.svg
 %{_unitdir}/lactd.service
 
