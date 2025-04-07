@@ -3,7 +3,7 @@
 %define oname LACT
 
 Name:           lact
-Version:        0.7.2
+Version:        0.7.3
 Release:        1
 Summary:        Linux AMDGPU Controller
 Group:          Utility
@@ -43,9 +43,9 @@ cat >>.cargo/config <<EOF
 [source.crates-io]
 replace-with = "vendored-sources"
 
-[source."git+https://github.com/ilya-zlobintsev/nvml-wrapper?branch=lact"]
+[source."git+https://github.com/ilya-zlobintsev/nvml-wrapper?branch=feature/pstate-wrappers"]
 git = "https://github.com/ilya-zlobintsev/nvml-wrapper"
-branch = "lact"
+branch = "feature/pstate-wrappers"
 replace-with = "vendored-sources"
 
 [source."git+https://gitlab.com/corectrl/copes"]
