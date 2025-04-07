@@ -3,7 +3,7 @@
 %define oname LACT
 
 Name:           lact
-Version:        0.7.2
+Version:        0.7.3
 Release:        1
 Summary:        Linux AMDGPU Controller
 Group:          Utility
@@ -43,9 +43,9 @@ cat >>.cargo/config <<EOF
 [source.crates-io]
 replace-with = "vendored-sources"
 
-[source."git+https://github.com/ilya-zlobintsev/nvml-wrapper?branch=lact"]
+[source."git+https://github.com/ilya-zlobintsev/nvml-wrapper?branch=feature/pstate-wrappers"]
 git = "https://github.com/ilya-zlobintsev/nvml-wrapper"
-branch = "lact"
+branch = "feature/pstate-wrappers"
 replace-with = "vendored-sources"
 
 [source."git+https://gitlab.com/corectrl/copes"]
@@ -77,8 +77,9 @@ systemctl enable --now lactd.service || true
 %license LICENSE
 %doc *.md
 %{_bindir}/lact
-%{_datadir}/applications/io.github.lact-linux.desktop
-%{_datadir}/pixmaps/io.github.lact-linux.png
-%{_datadir}/icons/hicolor/scalable/apps/io.github.lact-linux.svg
+%{_datadir}/applications/io.github.ilya_zlobintsev.LACT.desktop
+%{_datadir}/metainfo/io.github.ilya_zlobintsev.LACT.metainfo.xml
+%{_datadir}/pixmaps/io.github.ilya_zlobintsev.LACT.png
+%{_datadir}/icons/hicolor/scalable/apps/io.github.ilya_zlobintsev.LACT.svg
 %{_unitdir}/lactd.service
 
