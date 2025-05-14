@@ -25,6 +25,7 @@ BuildRequires:  pkgconfig(pango)
 BuildRequires:  pkgconfig(pygobject-3.0)
 BuildRequires:  python-gi
 BuildRequires:  systemd-rpm-macros
+BuildRequires:  pkgconfig(OpenCL)
 
 Requires: libadwaita-common
 Requires: gtk4
