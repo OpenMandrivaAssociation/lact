@@ -3,7 +3,7 @@
 %define oname LACT
 
 Name:           lact
-Version:        0.7.3
+Version:        0.7.4
 Release:        1
 Summary:        Linux AMDGPU Controller
 Group:          Utility
@@ -46,6 +46,11 @@ replace-with = "vendored-sources"
 [source."git+https://github.com/ilya-zlobintsev/nvml-wrapper?branch=feature/pstate-wrappers"]
 git = "https://github.com/ilya-zlobintsev/nvml-wrapper"
 branch = "feature/pstate-wrappers"
+replace-with = "vendored-sources"
+
+[source."git+https://github.com/kenba/cl3?branch=develop"]
+git = "https://github.com/kenba/cl3"
+branch = "develop"
 replace-with = "vendored-sources"
 
 [source."git+https://gitlab.com/corectrl/copes"]
