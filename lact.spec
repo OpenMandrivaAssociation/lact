@@ -3,7 +3,7 @@
 %define oname LACT
 
 Name:           lact
-Version:        0.8.0
+Version:        0.8.2
 Release:        1
 Summary:        Linux AMDGPU Controller
 Group:          Utility
@@ -42,10 +42,6 @@ This application allows you to control your AMD GPU on a Linux system.
 
 cat >>.cargo/config <<EOF
 [source.crates-io]
-replace-with = "vendored-sources"
-
-[source."git+https://github.com/Umio-Yasuno/libdrm-amdgpu-sys-rs"]
-git = "https://github.com/Umio-Yasuno/libdrm-amdgpu-sys-rs"
 replace-with = "vendored-sources"
 
 [source."git+https://github.com/kenba/cl3?branch=develop"]
