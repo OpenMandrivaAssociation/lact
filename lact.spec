@@ -3,16 +3,16 @@
 %define oname LACT
 
 Name:           lact
-Version:        0.8.3
+Version:        0.8.4
 Release:        1
 Summary:        Linux AMDGPU Controller
 Group:          Utility
 License:        MIT
 URL:            https://github.com/ilya-zlobintsev/LACT
-Source:         https://github.com/ilya-zlobintsev/LACT/archive/v%{version}/%{oname}-%{version}.tar.gz
-Source1:        vendor.tar.xz
-# vendor.tar.xz is generated using
-# tar -xvf LACT-0.7.2.tar.gz && cargo vendor LACT-0.7.2/vendor && tar -cJf vendor.tar.xz LACT-0.7.2/vendor
+Source0:        https://github.com/ilya-zlobintsev/LACT/archive/v%{version}/%{oname}-%{version}.tar.gz
+Source1:        %{oname}-%{version}-vendor.tar.xz
+# LACT-0.8.4-vendor.tar.xz is generated using:
+# tar -xvf LACT-0.8.4.tar.gz && pushd LACT-0.8.4/ && cargo vendor && tar -cJf ../LACT-0.8.4-vendor.tar.xz vendor/ && popd
 
 BuildRequires:  cargo
 BuildRequires:  rust-packaging
@@ -44,18 +44,12 @@ cat >>.cargo/config <<EOF
 [source.crates-io]
 replace-with = "vendored-sources"
 
-[source."git+https://github.com/kenba/cl3?branch=develop"]
-git = "https://github.com/kenba/cl3"
-branch = "develop"
-replace-with = "vendored-sources"
-
 [source.vendored-sources]
 directory = "vendor"
-
 EOF
 
 %build
-cargo build -p lact --release --features=adw
+%__cargo build -p lact --release --features=adw
 
 %install
 %make_install PREFIX="%{_prefix}"
@@ -76,7 +70,7 @@ systemctl enable --now lactd.service || true
 %{_bindir}/lact
 %{_datadir}/applications/io.github.ilya_zlobintsev.LACT.desktop
 %{_datadir}/metainfo/io.github.ilya_zlobintsev.LACT.metainfo.xml
-%{_datadir}/pixmaps/io.github.ilya_zlobintsev.LACT.png
 %{_datadir}/icons/hicolor/scalable/apps/io.github.ilya_zlobintsev.LACT.svg
+%{_datadir}/icons/hicolor/512x512/apps/io.github.ilya_zlobintsev.LACT.png
 %{_unitdir}/lactd.service
 
