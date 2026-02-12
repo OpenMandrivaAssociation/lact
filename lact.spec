@@ -15,6 +15,7 @@ Source1:        %{oname}-%{version}-vendor.tar.xz
 # tar -xvf LACT-0.8.4.tar.gz && pushd LACT-0.8.4/ && cargo vendor && tar -cJf ../LACT-0.8.4-vendor.tar.xz vendor/ && popd
 
 BuildRequires:  cargo
+BuildRequires:	make
 BuildRequires:  rust-packaging
 BuildRequires:  pkgconfig(gtk4)
 BuildRequires:  pkgconfig(libdrm)
