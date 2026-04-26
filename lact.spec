@@ -2,10 +2,17 @@
 %global services lactd.service
 %define oname LACT
 
+# cargo test essentially recompiles the entire package _just_ to test it,
+# this is a **gigantic waste of resources and time**.
+# cargo needs to do better and be able to test using the as-built package the
+# first time and not rebuild an entire package again just to test it.
+# n.b. tests passing in VM local builds, disable for ABF.
+%bcond cargotests 0
+
 Name:           lact
-Version:        0.8.4
+Summary:        Linux GPU Configuration And Monitoring Tool
+Version:        0.9.0
 Release:        1
-Summary:        Linux AMDGPU Controller
 Group:          Utility
 License:        MIT
 URL:            https://github.com/ilya-zlobintsev/LACT
@@ -14,31 +21,51 @@ Source1:        %{oname}-%{version}-vendor.tar.xz
 # LACT-0.8.4-vendor.tar.xz is generated using:
 # tar -xvf LACT-0.8.4.tar.gz && pushd LACT-0.8.4/ && cargo vendor && tar -cJf ../LACT-0.8.4-vendor.tar.xz vendor/ && popd
 
-BuildRequires:  cargo
+BuildRequires:	appstream-util
+BuildRequires:	cargo
+BuildRequires:	desktop-file-utils
+BuildRequires:	hicolor-icon-theme
 BuildRequires:	make
-BuildRequires:  rust-packaging
-BuildRequires:  pkgconfig(gtk4)
-BuildRequires:  pkgconfig(libdrm)
-BuildRequires:  pkgconfig(blueprint-compiler)
-BuildRequires:  pkgconfig(libadwaita-1)
-BuildRequires:  pkgconfig(systemd)
-BuildRequires:  pkgconfig(pango)
-BuildRequires:  pkgconfig(pygobject-3.0)
-BuildRequires:  python-gi
-BuildRequires:  systemd-rpm-macros
-BuildRequires:  pkgconfig(OpenCL)
+BuildRequires:	pkgconfig(fuse3)
+BuildRequires:	pkgconfig(gtk4)
+BuildRequires:	pkgconfig(hwdata)
+BuildRequires:	pkgconfig(libdrm)
+BuildRequires:	pkgconfig(libadwaita-1)
+BuildRequires:	pkgconfig(OpenCL)
+BuildRequires:	pkgconfig(pango)
+BuildRequires:	pkgconfig(vulkan)
+BuildRequires:	rust-packaging
+BuildRequires:	systemd-rpm-macros
 
-Requires: libadwaita-common
-Requires: gtk4
-Requires: python-gi
-Requires: python-gobject3
+Requires:	clinfo
+Requires:	gtk4
+Requires:	hwdata
+Requires:	libadwaita-common
+Requires:	vulkan-tools
 
 %description
-This application allows you to control your AMD GPU on a Linux system.
+This application allows you to control your AMD, Nvidia orIntel GPU on a
+Linux system.
+
+Features:
+
+    Detailed GPU information reporting
+    Monitoring
+    Power configuration
+    Thermals configuration
+    Overclocking
+    Settings profiles
+    OpenTelemetry metrics exporter
+
+GPU configuration is handled by a system service that does not depend on
+a graphical session (Wayland/X11).
+
+The service can also be used standalone with a config file, for example
+in headless scenarios.
 
 %prep
-# Vendored sources
 %autosetup -n %{oname}-%{version} -p1 -a1
+# prep vendored crates
 %cargo_prep -v vendor
 
 cat >>.cargo/config <<EOF
@@ -50,10 +77,21 @@ directory = "vendor"
 EOF
 
 %build
-%__cargo build -p lact --release --features=adw
+%__cargo build -p lact --release
+export CARGO_HOME=$PWD/.cargo
+# sort out crate licenses
+%cargo_license_summary
+%{cargo_license} > LICENSES.dependencies
 
 %install
 %make_install PREFIX="%{_prefix}"
+
+%check
+%if %{with cargotests}
+%__cargo test --release --frozen --all --all-features --verbose
+%endif
+desktop-file-validate %{buildroot}%{_datadir}/applications/*.%{oname}.desktop
+appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.%{oname}.metainfo.xml
 
 %post
 %systemd_post lactd.service
@@ -66,12 +104,12 @@ systemctl enable --now lactd.service || true
 %systemd_postun_with_restart lactd.service
 
 %files
-%license LICENSE
-%doc *.md
+%license LICENSE LICENSES.dependencies
+%doc README.md docs/CONTRIBUTING.md docs/CONFIG.md docs/API.md docs/EXPORTER.md
 %{_bindir}/lact
-%{_datadir}/applications/io.github.ilya_zlobintsev.LACT.desktop
-%{_datadir}/metainfo/io.github.ilya_zlobintsev.LACT.metainfo.xml
-%{_datadir}/icons/hicolor/scalable/apps/io.github.ilya_zlobintsev.LACT.svg
-%{_datadir}/icons/hicolor/512x512/apps/io.github.ilya_zlobintsev.LACT.png
+%{_datadir}/applications/io.github.ilya_zlobintsev.%{oname}.desktop
+%{_datadir}/metainfo/io.github.ilya_zlobintsev.%{oname}.metainfo.xml
+%{_datadir}/icons/hicolor/512x512/apps/io.github.ilya_zlobintsev.%{oname}.png
+%{_datadir}/icons/hicolor/scalable/apps/io.github.ilya_zlobintsev.%{oname}.svg
 %{_unitdir}/lactd.service
 
