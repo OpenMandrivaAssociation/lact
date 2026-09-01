@@ -11,37 +11,40 @@
 
 Name:           lact
 Summary:        Linux GPU Configuration And Monitoring Tool
-Version:        0.9.0
+Version:        0.10.1
 Release:        1
 Group:          Utility
 License:        MIT
 URL:            https://github.com/ilya-zlobintsev/LACT
 Source0:        https://github.com/ilya-zlobintsev/LACT/archive/v%{version}/%{oname}-%{version}.tar.gz
-Source1:        %{oname}-%{version}-vendor.tar.xz
-# LACT-0.8.4-vendor.tar.xz is generated using:
-# tar -xvf LACT-0.8.4.tar.gz && pushd LACT-0.8.4/ && cargo vendor && tar -cJf ../LACT-0.8.4-vendor.tar.xz vendor/ && popd
+Source1:        vendor.tar.xz
+# generate vendor by running inside source tree "cargo vendor" command.
 
-BuildRequires:	appstream-util
-BuildRequires:	cargo
-BuildRequires:	desktop-file-utils
-BuildRequires:	hicolor-icon-theme
-BuildRequires:	make
-BuildRequires:	pkgconfig(fuse3)
-BuildRequires:	pkgconfig(gtk4)
-BuildRequires:	pkgconfig(hwdata)
-BuildRequires:	pkgconfig(libdrm)
-BuildRequires:	pkgconfig(libadwaita-1)
-BuildRequires:	pkgconfig(OpenCL)
-BuildRequires:	pkgconfig(pango)
-BuildRequires:	pkgconfig(vulkan)
-BuildRequires:	rust-packaging
-BuildRequires:	systemd-rpm-macros
+BuildRequires: appstream-util
+BuildRequires: cargo
+BuildRequires: desktop-file-utils
+BuildRequires: hicolor-icon-theme
+BuildRequires: make
+BuildRequires: pkgconfig(fuse3)
+BuildRequires: pkgconfig(gtk4)
+BuildRequires: pkgconfig(hwdata)
+BuildRequires: pkgconfig(libdisplay-info)
+BuildRequires: pkgconfig(libdrm)
+BuildRequires: pkgconfig(libadwaita-1)
+BuildRequires: pkgconfig(OpenCL)
+BuildRequires: pkgconfig(pango)
+BuildRequires: pkgconfig(vulkan)
+BuildRequires: rust-packaging
+BuildRequires: systemd-rpm-macros
+BuildRequires: pkgconfig(pygobject-3.0)
 
-Requires:	clinfo
-Requires:	gtk4
-Requires:	hwdata
-Requires:	libadwaita-common
-Requires:	vulkan-tools
+Requires: clinfo
+Requires: gtk4
+Requires: hwdata
+Requires: libadwaita-common
+Requires: vulkan-tools
+Requires: python-gi
+Requires: python-gobject3
 
 %description
 This application allows you to control your AMD, Nvidia orIntel GPU on a
@@ -70,6 +73,16 @@ in headless scenarios.
 
 cat >>.cargo/config <<EOF
 [source.crates-io]
+replace-with = "vendored-sources"
+
+[source."git+https://github.com/ilya-zlobintsev/zbus_polkit?branch=fix-uid-type"]
+git = "https://github.com/ilya-zlobintsev/zbus_polkit"
+branch = "fix-uid-type"
+replace-with = "vendored-sources"
+
+[source."git+https://github.com/rust-nvml/nvml-wrapper.git?rev=eb47417eede43443f139053479618e96ad32893d"]
+git = "https://github.com/rust-nvml/nvml-wrapper.git"
+rev = "eb47417eede43443f139053479618e96ad32893d"
 replace-with = "vendored-sources"
 
 [source.vendored-sources]
@@ -108,8 +121,9 @@ systemctl enable --now lactd.service || true
 %doc README.md docs/CONTRIBUTING.md docs/CONFIG.md docs/API.md docs/EXPORTER.md
 %{_bindir}/lact
 %{_datadir}/applications/io.github.ilya_zlobintsev.%{oname}.desktop
+%{_datadir}/polkit-1/actions/io.github.ilya_zlobintsev.LACT.policy
 %{_datadir}/metainfo/io.github.ilya_zlobintsev.%{oname}.metainfo.xml
-%{_datadir}/icons/hicolor/512x512/apps/io.github.ilya_zlobintsev.%{oname}.png
+%{_datadir}/icons/hicolor/*x*/apps/io.github.ilya_zlobintsev.%{oname}.png
 %{_datadir}/icons/hicolor/scalable/apps/io.github.ilya_zlobintsev.%{oname}.svg
 %{_unitdir}/lactd.service
 
